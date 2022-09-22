@@ -23,12 +23,11 @@ def addExpenses (good_or_service,price,date,expense_type):
 def CreateDataFrame ():
 	expense_report = pd.DataFrame()
 	expense_report['GOODS'] = GOODS_OR_SERVICES
-	expense_report['PRICE'] = PRICES
+	expense_report['PRICES'] = PRICES
 	expense_report['DATES'] = DATES
 	expense_report['EXPENSE_TYPES'] = EXPENSE_TYPES
-	sorted_expense_report = expense_report.sort_values(by='DATE')
-	#print(tabulate(expense_report, headers='keys', tablefmt='psql'))
-	#print(sum(expense_report.loc[:,'PRICE']))
+	sorted_expense_report = expense_report.sort_values(by='DATES')
+	print(tabulate(expense_report, headers='keys', tablefmt='psql'))
 	return expense_report
 
 
@@ -46,8 +45,13 @@ def dataFrameTest_Year():
 	return df1
 
 def graphs(df):
-	df2.plot(kind='bar',x='GOODS',y="PRICES")
-	plt.show()
+	fig1=plt.figure(figsize=(3, 3), dpi=50)
+	plt.pie(df['PRICES'],labels=df["EXPENSE_TYPES"], shadow=True, rotatelabels=True)
+
+	fig2=plt.figure(figsize=(3, 3), dpi=50)
+	plt.scatter(df['GOODS'],df["PRICES"])
+	return fig1,fig2
+	
 
 
 
@@ -82,7 +86,7 @@ def orderDate(DateList):
 #addExpenses('Mela',int('1'),todaydate.strftime("%d/%d/%Y"),'Alimentari')
 #addExpenses('Banana',int('2'),todaydate.strftime("%d/%d/%Y"),'Alimentari')
 #ShowExpenses()
-"""
+
 table_ex=dataFrameTest_Year()
 print(tabulate(table_ex, headers='keys', tablefmt='psql'))
 #order_DATES=orderDate(table_ex.loc[:,"DATE"])
@@ -91,12 +95,11 @@ print(tabulate(table_ex, headers='keys', tablefmt='psql'))
 
 start_date = "1/1/2022"
 end_date = "30/1/2022"
-df2=table_ex.loc[(table_ex["DATE"] >= start_date) & (table_ex["DATE"] <= end_date)]
-df2['DATE']=pd.to_datetime(df2['DATE'], dayfirst=False, format="%d/%m/%Y")
+df2=table_ex.loc[(table_ex["DATES"] >= start_date) & (table_ex["DATES"] <= end_date)]
+df2['DATES']=pd.to_datetime(df2['DATES'], dayfirst=False, format="%d/%m/%Y")
 print(tabulate(df2, headers='keys', tablefmt='psql'))
-df2.plot(kind='bar',x='DATE',y="PRICE")
+df2.plot(kind='bar',x='DATES',y="PRICES")
 plt.show()
-"""
 
 """
 
